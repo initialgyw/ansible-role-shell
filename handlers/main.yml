@@ -1,0 +1,5 @@
+---
+- name: set shell user settings
+  ansible.builtin.template:
+    src: "user-settings.j2"
+    dest: "{{ ansible_env.HOME }}/.{{ shell_type }}/user-settings.{{ shell_type }}"
