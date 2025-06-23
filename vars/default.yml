@@ -1,3 +1,5 @@
+system_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+
 supported_shell_types:
   - bash
   - zsh
@@ -15,5 +17,5 @@ shell_extra_paths: "{{ shell_set_extra_paths | default([]) }}"
 
 enable_fzf: "{{ shell_enable_fzf | default('false') | bool }}"
 fzf_version: "{{ shell_fzf_version | default('0.62.0') }}"
-fzf_tarball: "fzf-{{ fzf_version }}-{{ ansible_system | lower }}_{{ ansible_architecture }}.tar.gz"
+fzf_tarball: "fzf-{{ fzf_version }}-{{ ansible_system | lower }}_{{ system_arch }}.tar.gz"
 fzf_url: "https://github.com/junegunn/fzf/releases/download/v{{ fzf_version }}/{{ fzf_tarball }}"
