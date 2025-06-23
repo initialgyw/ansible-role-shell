@@ -1,9 +1,12 @@
 galaxy_info:
+  role_name: shell
+  namespace: initialgyw
   author: konri
-  description: portal shell config for myself
+  description: portable shell config for myself
   company: GYWadmin
+  license: MIT
 
-  min_ansible_version: 2.1
+  min_ansible_version: "2.0"
 
   galaxy_tags:
     - shell

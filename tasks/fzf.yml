@@ -1,28 +1,32 @@
 ---
-- name: check if fzf is set to specific version
-  ansible.builtin.shell: "{{ ansible_env.HOME }}/bin/fzf --version"
+- name: Check if fzf is set to specific version
+  ansible.builtin.command: "{{ ansible_env.HOME }}/bin/fzf --version"
   register: fzf_check
-  ignore_errors: yes
+  changed_when: false
+  ignore_errors: true
+  check_mode: false
 
-- name: install fzf
+- name: Install fzf
+  when:
+    - "fzf_version not in fzf_check.stdout"
+    - not ansible_check_mode
   block:
-    - name: download fzf
+    - name: Download fzf
       ansible.builtin.get_url:
+        mode: "0644"
         url: "{{ fzf_url }}"
         dest: "{{ ansible_env.HOME }}/tmp/{{ fzf_tarball }}"
 
     - name: Extract fzf (preferred method)
       block:
-      - name: Extract fzf (unarchive)
-        ansible.builtin.unarchive:
-          src: "{{ ansible_env.HOME }}/tmp/{{ fzf_tarball }}"
-          dest: "{{ ansible_env.HOME }}/bin/"
-          remote_src: yes
+        - name: Extract fzf (unarchive)
+          ansible.builtin.unarchive:
+            src: "{{ ansible_env.HOME }}/tmp/{{ fzf_tarball }}"
+            dest: "{{ ansible_env.HOME }}/bin/"
+            remote_src: true
       rescue:
-        - name: Extract fzf (tar)
-          ansible.builtin.shell: >
+        - name: Extract fzf (tar) # noqa: command-instead-of-module
+          # fallback for broken tarballs or unsupported formats
+          ansible.builtin.command: >
             /usr/bin/tar xzf {{ ansible_env.HOME }}/tmp/{{ fzf_tarball }} -C {{ ansible_env.HOME }}/bin/
-
-  when:
-    - "fzf_version not in fzf_check.stdout"
-    - not ansible_check_mode
+          changed_when: false
