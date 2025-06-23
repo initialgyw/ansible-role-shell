@@ -1,0 +1,15 @@
+supported_shell_types:
+  - bash
+  - zsh
+supported_zsh_themes:
+  - pure
+
+shell_binary: "{{ shell_set_default_shell | default('/bin/zsh' if ansible_system == 'Darwin' else '/bin/bash') }}"
+shell_type: "{{ shell_binary.split('/')[-1] }}"
+shell_theme: "{{ shell_set_theme | default() }}"
+shell_extra_paths: "{{ shell_set_extra_paths | default([]) }}"
+
+enable_fzf: "{{ shell_enable_fzf | default('false') | bool }}"
+fzf_version: "{{ shell_fzf_version | default('0.62.0') }}"
+fzf_tarball: "fzf-{{ fzf_version }}-{{ ansible_system | lower }}_{{ ansible_architecture }}.tar.gz"
+fzf_url: "https://github.com/junegunn/fzf/releases/download/v{{ fzf_version }}/{{ fzf_tarball }}"

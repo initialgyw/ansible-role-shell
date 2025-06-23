@@ -1,0 +1,28 @@
+---
+- name: check if fzf is set to specific version
+  ansible.builtin.shell: "{{ ansible_env.HOME }}/bin/fzf --version"
+  register: fzf_check
+  ignore_errors: yes
+
+- name: install fzf
+  block:
+    - name: download fzf
+      ansible.builtin.get_url:
+        url: "{{ fzf_url }}"
+        dest: "{{ ansible_env.HOME }}/tmp/{{ fzf_tarball }}"
+
+    - name: Extract fzf (preferred method)
+      block:
+      - name: Extract fzf (unarchive)
+        ansible.builtin.unarchive:
+          src: "{{ ansible_env.HOME }}/tmp/{{ fzf_tarball }}"
+          dest: "{{ ansible_env.HOME }}/bin/"
+          remote_src: yes
+      rescue:
+        - name: Extract fzf (tar)
+          ansible.builtin.shell: >
+            /usr/bin/tar xzf {{ ansible_env.HOME }}/tmp/{{ fzf_tarball }} -C {{ ansible_env.HOME }}/bin/
+
+  when:
+    - "fzf_version not in fzf_check.stdout"
+    - not ansible_check_mode

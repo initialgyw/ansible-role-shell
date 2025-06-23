@@ -1,0 +1,19 @@
+# managed by ansible
+
+# HISTORY
+HISTFILE=~/.bash/history
+HISTSIZE=-1
+HISTFILESIZE=$HISTSIZE
+HISTCONTROL=ignoredups:ignorespace
+shopt -s histappend                           # Append to the history file, don't overwrite it
+PROMPT_COMMAND="history -a; $PROMPT_COMMAND"  # Immediately append commands to the history file
+# END HISTORY
+
+{% if enable_fzf %}
+source <(~/bin/fzf --bash)
+{% endif %}
+
+# Source all .bash files in ~/.bash
+for bash_file in ~/.bash/*.bash; do
+  [ -f "$bash_file" ] && source "$bash_file"
+done

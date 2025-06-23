@@ -1,0 +1,16 @@
+---
+- name: Clone ZSH pure theme
+  ansible.builtin.git:
+    repo: 'https://github.com/sindresorhus/pure.git'
+    dest: "{{ ansible_env.HOME }}/.zsh/theme/pure"
+    update: yes
+
+- name: create ~/.zsh/theme-config
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/.zsh/theme-config.zsh"
+    content: |
+      # managed by ansible
+
+      fpath+=($HOME/.zsh/theme/pure)
+      autoload -U promptinit; promptinit
+      prompt pure

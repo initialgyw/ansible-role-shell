@@ -1,0 +1,8 @@
+---
+- name: set shell profile
+  ansible.builtin.template:
+    src: zshrc.j2
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+
+- ansible.builtin.include_tasks: configure-theme-{{ shell_theme }}.yml
+  when: shell_theme

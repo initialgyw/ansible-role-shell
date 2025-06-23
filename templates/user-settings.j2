@@ -1,0 +1,21 @@
+# managed by ansible
+
+{% if extra_paths | length > 0 %}
+# configure PATHs
+custom_paths="{{ extra_paths | join(':') }}"
+export PATH=$PATH:$custom_paths
+{% endif %}
+
+{% if shell_aliases is defined %}
+# set bash aliases
+{% for key, value in shell_aliases.items() %}
+alias {{ key }}={{ value }}
+{% endfor %}
+{% endif %}
+
+{% if shell_env_vars is defined %}
+# configure zsh environments variables
+{% for key, value in shell_env_vars.items() %}
+export {{ key }}={{ value }}
+{% endfor %}
+{% endif %}
