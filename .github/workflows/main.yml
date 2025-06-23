@@ -1,0 +1,54 @@
+name: Github Actions - ansible-role-shell
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  lint:
+    name: Lint Ansible Role
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install ansible-lint
+        run: pip install ansible ansible-lint
+
+      - name: Run ansible-lint
+        run: ansible-lint .
+
+  publish:
+    name: Publish to Ansible Galaxy
+    needs: lint
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Ansible and Ansible Galaxy CLI
+        run: pip install ansible
+
+      - name: Import role to Ansible Galaxy
+        env:
+          ANSIBLE_GALAXY_TOKEN: ${{ secrets.ANSIBLE_GALAXY_TOKEN }}
+        run: |
+          ansible-galaxy role import \
+            --api-key "$ANSIBLE_GALAXY_TOKEN" \
+            ${{ github.repository_owner }} \
+            $(basename ${{ github.repository }})
