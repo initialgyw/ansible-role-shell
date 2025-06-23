@@ -61,6 +61,12 @@
     shell_extra_paths: "{{ shell_extra_paths + [ansible_env.HOME + '/bin'] }}"
   when: ansible_env.HOME + '/bin' not in shell_extra_paths
 
+- name: Set shell extra paths
+  ansible.builtin.debug:
+    msg: "setting shell user settings"
+  notify: Set shell user settings
+  changed_when: true
+
 - name: Configure fzf
   ansible.builtin.include_tasks: fzf.yml
   when: enable_fzf

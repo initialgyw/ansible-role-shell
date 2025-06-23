@@ -1,8 +1,8 @@
 # managed by ansible
 
-{% if extra_paths | length > 0 %}
+{% if shell_extra_paths | length > 0 %}
 # configure PATHs
-custom_paths="{{ extra_paths | join(':') }}"
+custom_paths="{{ shell_extra_paths | join(':') }}"
 export PATH=$PATH:$custom_paths
 {% endif %}
 
