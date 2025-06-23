@@ -1,5 +1,6 @@
 ---
-- name: set shell profile
+- name: Set shell profile
   ansible.builtin.template:
+    mode: "0644"
     src: bashrc.j2
     dest: "{{ ansible_env.HOME }}/.bashrc"

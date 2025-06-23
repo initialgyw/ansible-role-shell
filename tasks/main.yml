@@ -1,6 +1,6 @@
 ---
 # load the variables in hierachical order
-- name: load default vars
+- name: Load default vars
   ansible.builtin.include_vars:
     file: default.yml
 
@@ -9,38 +9,42 @@
 #     file: "{{ ansible_system | lower }}.yaml"
 
 # variables checking
-- name: verify shell type
+- name: Verify shell type
   ansible.builtin.fail:
     msg: "{{ shell_type }} is not supported"
   when: shell_type not in ['bash', 'zsh']
+  check_mode: false
 
-- name: verify shell theme
+- name: Verify shell theme
   ansible.builtin.fail:
-    msg: "{{ shell_theme }} is not supported"
+    msg: "{{ shell_theme }} is not supported. Supported themes are {{ supported_zsh_themes }}"
   when:
     - shell_theme
-    - shell_theme not in ['pure']
+    - shell_type == 'zsh'
+    - shell_theme not in supported_zsh_themes
+  check_mode: false
 
-- name: verify shell installation
+- name: Verify shell installation
   block:
-    - name: check shell binary path
+    - name: Check shell binary path
       ansible.builtin.stat:
         path: "{{ shell_binary }}"
       register: check_shell_binary
 
-    - name: fail if shell binary does not exist
+    - name: Fail if shell binary does not exist
       ansible.builtin.fail:
         msg: "{{ shell_binary }} does not exists"
       when: not check_shell_binary.stat.exists
 
-- name: set user shell
+- name: Set user shell
   become: true
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     shell: "{{ shell_binary }}"
 
-- name: create the necessary directories in user home
+- name: Create the necessary directories in user home
   ansible.builtin.file:
+    mode: "0755"
     path: "{{ item }}"
     state: directory
   with_items:
@@ -48,14 +52,15 @@
     - "{{ ansible_env.HOME }}/tmp"
     - "{{ ansible_env.HOME }}/{{ shell_type }}"
 
-# configure the shell type
-- ansible.builtin.include_tasks: "{{ shell_type }}/configure.yml"
+- name: Configure shell
+  ansible.builtin.include_tasks: "{{ shell_type }}/configure.yml"
 
 # set paths
-- ansible.builtin.set_fact:
+- name: Set shell extra paths
+  ansible.builtin.set_fact:
     shell_extra_paths: "{{ shell_extra_paths + [ansible_env.HOME + '/bin'] }}"
   when: ansible_env.HOME + '/bin' not in shell_extra_paths
 
-- name: configure fzf
+- name: Configure fzf
   ansible.builtin.include_tasks: fzf.yml
   when: enable_fzf

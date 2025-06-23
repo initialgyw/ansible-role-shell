@@ -4,6 +4,10 @@ supported_shell_types:
 supported_zsh_themes:
   - pure
 
+shell_theme_pure:
+  repo: "https://github.com/sindresorhus/pure.git"
+  tag: "v1.23.0"
+
 shell_binary: "{{ shell_set_default_shell | default('/bin/zsh' if ansible_system == 'Darwin' else '/bin/bash') }}"
 shell_type: "{{ shell_binary.split('/')[-1] }}"
 shell_theme: "{{ shell_set_theme | default() }}"

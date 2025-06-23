@@ -1,5 +1,6 @@
 ---
-- name: set shell user settings
+- name: Set shell user settings
   ansible.builtin.template:
+    mode: "0644"
     src: "user-settings.j2"
     dest: "{{ ansible_env.HOME }}/.{{ shell_type }}/user-settings.{{ shell_type }}"
