@@ -14,6 +14,8 @@ shell_binary: "{{ shell_set_default_shell | default('/bin/zsh' if ansible_system
 shell_type: "{{ shell_binary.split('/')[-1] }}"
 shell_theme: "{{ shell_set_theme | default() }}"
 shell_extra_paths: "{{ shell_set_extra_paths | default([]) }}"
+shell_aliases: "{{ shell_set_aliases | default({}) }}"
+shell_env_vars: "{{ shell_set_env_vars | default({}) }}"
 
 enable_fzf: "{{ shell_enable_fzf | default('false') | bool }}"
 fzf_version: "{{ shell_fzf_version | default('0.62.0') }}"
