@@ -61,9 +61,9 @@
     shell_extra_paths: "{{ shell_extra_paths + [ansible_env.HOME + '/bin'] }}"
   when: ansible_env.HOME + '/bin' not in shell_extra_paths
 
-- name: Set shell extra paths
+- name: Update shell user settings
   ansible.builtin.debug:
-    msg: "setting shell user settings"
+    msg: "setting user shell configs"
   notify: Set shell user settings
   changed_when: true
 
