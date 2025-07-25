@@ -6,15 +6,16 @@ Portable shell config for myself. All the shell configs are stored in ~/<shell>.
 
 ## Role Variables
 
-| Variable                | Type           | Required | Default   | Choices                 | Comments                                    |
-|-------------------------|--------------- |----------|-----------|-------------------------|---------------------------------------------|
-| shell_set_default_shell | str            | no       | /bin/bash | absolute path to binary | set the user's default shell                |
-| shell_set_theme         | str            | no       |           | pure                    | set the shell theme                         |
-| shell_set_extra_paths   | list[str]      | no       |           |                         | add custom path to shell                    |
-| shell_set_aliases       | dict[str, str] | no       |           |                         | add aliases to shell                        |
-| shell_set_env_vars      | dict[str, str] | no       |           |                         | add environment variables to shell          |
-| shell_enable_fzf        | bool           | no       | false     |                         | enable fzf in your shell profile            |
-| shell_fzf_version       | string         | no       | 0.62.0    |                         | set the fzf_version                         |
+| Variable                | Type           | Required | Default         | Choices                 | Comments                                    |
+|-------------------------|--------------- |----------|-----------------|-------------------------|---------------------------------------------|
+| shell_set_default_shell | str            | no       | /bin/bash       | absolute path to binary | set the user's default shell                |
+| shell_set_theme         | str            | no       |                 | pure                    | set the shell theme                         |
+| shell_set_extra_paths   | list[str]      | no       |                 |                         | add custom path to shell                    |
+| shell_set_aliases       | dict[str, str] | no       |                 |                         | add aliases to shell                        |
+| shell_set_env_vars      | dict[str, str] | no       |                 |                         | add environment variables to shell          |
+| shell_set_history_file  | str            | no       | ~/.bash/history |                         | specify the shell history location          |
+| shell_enable_fzf        | bool           | no       | false           |                         | enable fzf in your shell profile            |
+| shell_fzf_version       | string         | no       | 0.62.0          |                         | set the fzf_version                         |
 
 ## Dependencies
 

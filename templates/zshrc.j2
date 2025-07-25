@@ -1,7 +1,7 @@
 # managed by ansible
 
 # HISTORY
-export HISTFILE=~/.zsh/history
+export HISTFILE={{ shell_history_file }}
 export HISTSIZE=5000000
 export SAVEHIST=$HISTSIZE
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.

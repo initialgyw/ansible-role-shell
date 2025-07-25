@@ -1,7 +1,7 @@
 # managed by ansible
 
 # HISTORY
-HISTFILE=~/.bash/history
+HISTFILE={{ shell_history_file }}
 HISTSIZE=-1
 HISTFILESIZE=$HISTSIZE
 HISTCONTROL=ignoredups:ignorespace
