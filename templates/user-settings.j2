@@ -7,7 +7,7 @@ export PATH=$PATH:$custom_paths
 {% endif %}
 
 {% if shell_aliases is defined %}
-# set bash aliases
+# set shell aliases
 {% for key, value in shell_aliases.items() %}
 alias {{ key }}={{ value }}
 {% endfor %}

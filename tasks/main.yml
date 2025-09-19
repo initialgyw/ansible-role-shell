@@ -42,6 +42,12 @@
     name: "{{ ansible_user_id }}"
     shell: "{{ shell_binary }}"
 
+- name: Persist user shell via cron
+  ansible.builtin.cron:
+    name: "Set default shell"
+    job: "sudo ch -s {{ shell_binary }} {{ ansible_user_id }}"
+  when: persist_shell
+
 - name: Create the necessary directories in user home
   ansible.builtin.file:
     mode: "0755"
