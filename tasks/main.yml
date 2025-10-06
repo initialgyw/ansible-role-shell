@@ -70,3 +70,7 @@
 - name: Configure fzf
   ansible.builtin.include_tasks: fzf.yml
   when: enable_fzf
+
+- name: Configure tmux
+  ansible.builtin.include_tasks: tmux.yml
+  when: enable_tmux
